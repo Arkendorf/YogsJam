@@ -1,0 +1,16 @@
+return {
+  mk1 = {score = 1, range = 1.5, damage = 1, cooldown = 1, behavior = 1},
+  mk2 = {score = 2, range = 2, damage = 1, cooldown = .8, behavior = 1},
+  double = {score = 3, range = 1.8, damage = 1, cooldown = .6, behavior = 1},
+  cannon = {score = 3, range = 2.5, damage = 2, cooldown = 1.5, behavior = 3},
+  pickoffer = {score = 4, range = 4, damage = 1, cooldown = .8, behavior = 2},
+  puncher = {score = 4, range = 2.5, damage = 2, cooldown = .8, behavior = 1},
+  ranger = {score = 5, range = 7, damage = 2, cooldown = 1, behavior = 2},
+  battery = {score = 5, range = 3.5, damage = 2, cooldown = .4, behavior = 3},
+  mk3 = {score = 6, range = 5, damage = 2, cooldown = .7, behavior = 1},
+  sniper = {score = 7, range = 10, damage = 2, cooldown = 1.2, behavior = 3},
+  thumper = {score = 8, range = 4, damage = 3, cooldown = .6, behavior = 3},
+  mk4 = {score = 9, range = 7, damage = 3, cooldown = .8, behavior = 1},
+  eagle = {score = 10, range = 14, damage = 3, cooldown = .8, behavior = 2},
+  duke = {score = 12, range = 12, damage = 5, cooldown = .6, behavior = 2},
+}
