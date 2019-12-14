@@ -1,13 +1,15 @@
 local gui = {}
 
 local buttons = {}
+
 local button_color = {1, 1, 1}
 local hover_color = {.9, .9, 1}
 local text_color = {.2, .2, .3}
 local disabled_color = {.6, .6, .6}
+local highlight_color = {.6, .6, 1}
 
 gui.add_button = function(key, x, y, w, h, text, func, args)
-  buttons[key] = {x = x, y = y, w = w, h = h, text = text, func = func, args = args, hover = false, color = {unpack(button_color)}}
+  buttons[key] = {x = x, y = y, w = w, h = h, text = text, func = func, args = args, color = {unpack(button_color)}}
 end
 
 gui.remove_button = function(key)
@@ -22,15 +24,30 @@ gui.enable_button = function(key)
   buttons[key].disabled = false
 end
 
+gui.highlight_button = function(key)
+  buttons[key].highlight = true
+end
+
+gui.unhighlight_button = function(key)
+  buttons[key].highlight = false
+end
+
 gui.update = function(dt)
   local mx, my = love.mouse.getPosition()
   for k, v in pairs(buttons) do
     if not v.disabled then
       if mx >= v.x and mx <= v.x+v.w and my >= v.y and my <= v.y+v.h then
         v.hover = true
-        gui.color_lerp(v.color, hover_color, dt)
       else
         v.hover = false
+      end
+      if v.highlight then
+        gui.color_lerp(v.color, highlight_color, dt)
+      elseif v.hover then
+        gui.color_lerp(v.color, hover_color, dt)
+      elseif v.disabled then
+        gui.color_lerp(v.color, disabled_color, dt)
+      else
         gui.color_lerp(v.color, button_color, dt)
       end
     end

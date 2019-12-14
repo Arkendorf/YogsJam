@@ -26,6 +26,12 @@ wave.update = function(dt)
   if new_wave == true then -- start another wave
     new_wave = false
 
+    gui.enable_button(0)
+    gui.enable_button(1)
+    gui.enable_button(2)
+    gui.enable_button(4)
+    gui.enable_button(8)
+
     current_wave = current_wave + 1
     wave.set_limits()
   end

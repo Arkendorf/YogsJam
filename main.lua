@@ -9,6 +9,13 @@ highscore = 0
 love.load = function()
   math.randomseed(os.time())
   home.load()
+
+  if love.filesystem.getInfo("highscore.txt") then
+    local text = love.filesystem.read("highscore.txt")
+    highscore = tonumber(text)
+  end
+
+  window_w, window_h = love.graphics.getDimensions()
 end
 
 love.update = function(dt)
@@ -39,4 +46,8 @@ love.mousepressed = function(x, y, button)
       game.mousepressed(x, y, button)
     end
   end
+end
+
+love.quit = function()
+  love.filesystem.write("highscore.txt", tostring(highscore))
 end

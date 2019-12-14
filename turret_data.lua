@@ -35,6 +35,10 @@ turret_data.add = function(type, x, y)
   turrets[#turrets+1] = {type = type, x = x, y = y, target = false, cooldown = 0}
 end
 
+turret_data.remove = function(i)
+  table.remove(turrets, i)
+end
+
 turret_data.get_list = function()
   return turrets
 end
@@ -64,7 +68,7 @@ turret_data.behavior[2] = function(i, v)
   local farthest = {ref = false, step = 0}
   local x, y = enemy_data.tile_to_pos(v.x, v.y)
   for k, w in pairs(enemy_data.get_list()) do
-    if v.step > farthest.step then
+    if w.step > farthest.step then
       if (w.x-x)*(w.x-x)+(w.y-y)*(w.y-y) <= type_info.range*type_info.range*tile_size*tile_size then
         farthest.ref = w
         farthest.step = v.step
@@ -79,7 +83,7 @@ turret_data.behavior[3] = function(i, v)
   local healthiest = {ref = false, health = 0}
   local x, y = enemy_data.tile_to_pos(v.x, v.y)
   for k, w in pairs(enemy_data.get_list()) do
-    if v.health > healthiest.health then
+    if w.health > healthiest.health then
       if (w.x-x)*(w.x-x)+(w.y-y)*(w.y-y) <= type_info.range*type_info.range*tile_size*tile_size then
         healthiest.ref = w
         healthiest.health = health

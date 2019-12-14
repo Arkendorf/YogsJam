@@ -39,6 +39,11 @@ place.draw = function()
     love.graphics.setColor(valid_color)
     local type_info = turret_types[turret_type]
     love.graphics.circle("line", (current_tile.x+.5)*tile_size, (current_tile.y+.5)*tile_size, type_info.range*tile_size)
+
+    local i, v = place.is_replace()
+    if v then
+      love.graphics.print("Replace " .. v.type .. " and give it away?", (current_tile.x+1)*tile_size, current_tile.y*tile_size)
+    end
   else
     love.graphics.setColor(invalid_color)
   end
@@ -47,6 +52,13 @@ end
 
 place.mousepressed = function(x, y, button)
   if place.is_valid() then
+    -- remove old and increment score
+    local i, v = place.is_replace()
+    if v then
+      score = score + turret_types[v.type].score
+      turret_data.remove(i)
+    end
+    -- add new
     turret_data.add(turret_type, current_tile.x, current_tile.y)
     game_state = "wave"
   end
@@ -54,6 +66,15 @@ end
 
 place.is_valid = function()
   return grid[current_tile.y][current_tile.x] == 1
+end
+
+place.is_replace = function()
+  local replace = false
+  for i, v in ipairs(turret_data.get_list()) do
+    if v.x == current_tile.x and v.y == current_tile.y then
+      return i, v
+    end
+  end
 end
 
 return place

@@ -12,7 +12,7 @@ end
 
 home.draw = function()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.print("Highscore: " .. tostring(score), 0, 100)
+  love.graphics.print("Highscore: " .. tostring(highscore), 0, 100)
 end
 
 home.button_new_game = function()

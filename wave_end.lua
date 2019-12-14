@@ -6,6 +6,11 @@ local wave_end = {}
 local turret_type = ""
 
 wave_end.load = function(turret_override)
+  gui.disable_button(0)
+  gui.disable_button(1)
+  gui.disable_button(2)
+  gui.disable_button(4)
+  gui.disable_button(8)
   gui.add_button("give_away", 0, 0, 128, 32, "Give Away", wave_end.button_give_away)
   gui.add_button("keep", 0, 36, 128, 32, "Keep", wave_end.button_keep)
 

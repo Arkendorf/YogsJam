@@ -10,12 +10,22 @@ local game = {}
 
 game_state = "intro"
 score = 0
-health = 100
+health = 0
+
+speed = 1
 
 game.load = function()
+  gui.add_button(0, 4, window_h-36, 48, 32, "Pause", game.set_speed, {0})
+  gui.add_button(1, 56, window_h-36, 32, 32, "1x", game.set_speed, {1})
+  gui.add_button(2, 92, window_h-36, 32, 32, "2x", game.set_speed, {2})
+  gui.add_button(4, 128, window_h-36, 32, 32, "4x", game.set_speed, {4})
+  gui.add_button(8, 164, window_h-36, 32, 32, "8x", game.set_speed, {8})
+
   game_state = "intro"
   score = 0
-  health = 2
+  health = 100
+  speed = 1
+  gui.highlight_button(1)
 
   map.load()
   intro.load()
@@ -25,9 +35,7 @@ game.load = function()
 end
 
 game.update = function(dt)
-  if love.keyboard.isDown("space") then
-    dt = dt * 4
-  end
+  dt = dt * speed
   map.update(dt)
   if game_state == "intro" then
     intro.update(dt)
@@ -66,6 +74,12 @@ game.mousepressed = function(x, y, button)
   if game_state == "place" then
     place.mousepressed(x, y, button)
   end
+end
+
+game.set_speed = function(args)
+  gui.unhighlight_button(speed)
+  speed = args[1]
+  gui.highlight_button(speed)
 end
 
 return game
