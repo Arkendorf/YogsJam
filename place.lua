@@ -45,7 +45,7 @@ place.draw = function()
 
     local i, v = place.is_replace()
     if v then
-      love.graphics.printf("Replace and give away " .. type_info.name .. "?", 305, 354, window_w-305-2, "right")
+      love.graphics.printf("Replace and give away " .. turret_types[v.type].name .. "?", 305, 354, window_w-305-2, "right")
     end
   else
     love.graphics.setColor(invalid_color)

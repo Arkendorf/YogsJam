@@ -32,7 +32,6 @@ end
 
 wave_end.draw = function()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.print(turret_type, 0, 100)
   wave_end.draw_menu(wave_end.turret_text(turret_type), turret_type)
 end
 

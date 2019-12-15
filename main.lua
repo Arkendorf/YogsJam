@@ -8,8 +8,12 @@ local game_over = require "game_over"
 local map = require "map"
 local effects = require "effects"
 
+local bgm = false
+
 state = "home"
 highscore = 0
+
+sfx = {}
 
 scale = 2
 canvas = false
@@ -21,6 +25,8 @@ love.load = function()
     local text = love.filesystem.read("highscore.txt")
     highscore = tonumber(text)
   end
+
+  love.window.setTitle("Supply & Demand")
   love.window.setMode(960, 768)
   window_w = math.floor(love.graphics.getWidth()/scale)
   window_h = math.floor(love.graphics.getHeight()/scale)
@@ -38,6 +44,10 @@ love.load = function()
   love.graphics.setFont(font)
 
   home.load()
+
+  bgm = love.audio.newSource("bgm.mp3", "stream")
+  bgm:setLooping(true)
+  bgm:play()
 end
 
 love.update = function(dt)
@@ -49,6 +59,20 @@ love.update = function(dt)
   elseif state == "game_over" then
     game_over.update(dt)
   end
+
+  for k, v in pairs(sfx) do
+    if not v:isPlaying() then
+      v:release()
+      sfx[k] = nil
+    end
+  end
+end
+
+add_sfx = function(source)
+  local k = #sfx+1
+  sfx[k] = source:clone()
+  sfx[k]:setPitch(math.random() * .2 + .9)
+  sfx[k]:play()
 end
 
 love.draw = function()

@@ -10,6 +10,8 @@ local num = 0
 
 local shadow_color = {107/255, 116/255, 178/255}
 
+local explosion_sfx = love.audio.newSource("explosion.wav", "static")
+
 enemy_data.load = function()
   start_v.x = grid_path[2].x - grid_path[1].x
   start_v.y = grid_path[2].y - grid_path[1].y
@@ -51,6 +53,7 @@ enemy_data.update = function(dt)
         end
       else
         effects.add_explosion(v.x, v.y)
+        add_sfx(explosion_sfx)
         enemy_data.remove(k)
         health = health - v.health
       end
@@ -66,8 +69,10 @@ end
 enemy_data.draw = function()
   love.graphics.setColor(shadow_color)
   for k, v in pairs(enemies) do
-    local type_info = enemy_types[v.type]
-    love.graphics.circle("fill", v.x-tile_size+2, v.y-tile_size+2, type_info.w/2)
+    if v.step > 2 then
+      local type_info = enemy_types[v.type]
+      love.graphics.circle("fill", v.x-tile_size+2, v.y-tile_size+2, type_info.w/2)
+    end
   end
   love.graphics.setColor(1, 1, 1)
   for k, v in pairs(enemies) do

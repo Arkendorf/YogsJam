@@ -9,6 +9,8 @@ local turrets = {}
 local base_img = love.graphics.newImage("turret_base.png")
 local shadow_img = love.graphics.newImage("turret_shadow.png")
 
+local gunshot_sfx = love.audio.newSource("gunshot.wav", "static")
+
 turret_data.load = function()
   turrets = {}
 end
@@ -59,6 +61,7 @@ turret_data.shoot = function(i, v)
     local shot_y = y + y_offset * math.cos(v.angle) + x_offset * math.sin(v.angle)
     effects.add_shot(shot_x, shot_y, v.target.x, v.target.y, type_info.damage)
     effects.add_flash(shot_x, shot_y, v.angle)
+    add_sfx(gunshot_sfx)
 
     v.gun = v.gun + 1
     if v.gun > #type_info.guns then
