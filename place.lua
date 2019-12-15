@@ -9,6 +9,8 @@ local current_tile = {x = 1, y = 1}
 local valid_color = {.2, 1, .2}
 local invalid_color = {1, .2, .2}
 
+local outline_img = love.graphics.newImage("turret_outline.png")
+
 place.load = function(turret)
   if turret ~= "" then
     turret_type = turret
@@ -18,17 +20,17 @@ place.load = function(turret)
 end
 
 place.update = function(dt)
-  local mx, my = love.mouse.getPosition()
-  current_tile.x = math.floor(mx/tile_size)
-  if current_tile.x < 1 then
-    current_tile.x = 1
+  local mx, my = get_mouse_pos()
+  current_tile.x = math.floor(mx/tile_size)+1
+  if current_tile.x < 2 then
+    current_tile.x = 2
   elseif current_tile.x > #grid[1] then
     current_tile.x = #grid[1]
   end
 
-  current_tile.y = math.floor(my/tile_size)
-  if current_tile.y < 1 then
-    current_tile.y = 1
+  current_tile.y = math.floor(my/tile_size)+1
+  if current_tile.y < 2 then
+    current_tile.y = 2
   elseif current_tile.y > #grid then
     current_tile.y = #grid
   end
@@ -38,16 +40,16 @@ place.draw = function()
   if place.is_valid() then
     love.graphics.setColor(valid_color)
     local type_info = turret_types[turret_type]
-    love.graphics.circle("line", (current_tile.x+.5)*tile_size, (current_tile.y+.5)*tile_size, type_info.range*tile_size)
+    love.graphics.circle("line", (current_tile.x-.5)*tile_size, (current_tile.y-.5)*tile_size, type_info.range*tile_size)
 
     local i, v = place.is_replace()
     if v then
-      love.graphics.print("Replace " .. v.type .. " and give it away?", (current_tile.x+1)*tile_size, current_tile.y*tile_size)
+      love.graphics.print("Replace " .. v.type .. " and give it away?", current_tile.x*tile_size, current_tile.y*tile_size)
     end
   else
     love.graphics.setColor(invalid_color)
   end
-  love.graphics.rectangle("line", current_tile.x*tile_size, current_tile.y*tile_size, tile_size, tile_size)
+  love.graphics.draw(outline_img, (current_tile.x-1)*tile_size, (current_tile.y-1)*tile_size)
 end
 
 place.mousepressed = function(x, y, button)

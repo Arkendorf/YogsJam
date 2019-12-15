@@ -2,11 +2,11 @@ local gui = {}
 
 local buttons = {}
 
-local button_color = {1, 1, 1}
-local hover_color = {.9, .9, 1}
-local text_color = {.2, .2, .3}
-local disabled_color = {.6, .6, .6}
-local highlight_color = {.6, .6, 1}
+local button_color = {144/255, 158/255, 221/255}
+local hover_color = {193/255, 217/255, 242/255}
+local text_color = {41/255, 50/255, 104/255}
+local disabled_color = {70/255, 75/255, 140/255}
+local highlight_color = {107/255, 116/255, 178/255}
 
 gui.add_button = function(key, x, y, w, h, text, func, args)
   buttons[key] = {x = x, y = y, w = w, h = h, text = text, func = func, args = args, color = {unpack(button_color)}}
@@ -33,7 +33,7 @@ gui.unhighlight_button = function(key)
 end
 
 gui.update = function(dt)
-  local mx, my = love.mouse.getPosition()
+  local mx, my = get_mouse_pos()
   for k, v in pairs(buttons) do
     if not v.disabled then
       if mx >= v.x and mx <= v.x+v.w and my >= v.y and my <= v.y+v.h then
@@ -41,29 +41,25 @@ gui.update = function(dt)
       else
         v.hover = false
       end
-      if v.highlight then
-        gui.color_lerp(v.color, highlight_color, dt)
-      elseif v.hover then
-        gui.color_lerp(v.color, hover_color, dt)
-      elseif v.disabled then
-        gui.color_lerp(v.color, disabled_color, dt)
-      else
-        gui.color_lerp(v.color, button_color, dt)
-      end
+    end
+    if v.disabled then
+      gui.color_lerp(v.color, disabled_color, dt)
+    elseif v.highlight then
+      gui.color_lerp(v.color, highlight_color, dt)
+    elseif v.hover then
+      gui.color_lerp(v.color, hover_color, dt)
+    else
+      gui.color_lerp(v.color, button_color, dt)
     end
   end
 end
 
 gui.draw = function()
   for k, v in pairs(buttons) do
-    if not v.disabled then
-      love.graphics.setColor(v.color)
-    else
-      love.graphics.setColor(disabled_color)
-    end
+    love.graphics.setColor(v.color)
     love.graphics.rectangle("fill", v.x, v.y, v.w, v.h)
     love.graphics.setColor(text_color)
-    love.graphics.print(v.text, v.x, v.y)
+    love.graphics.printf(v.text, v.x, v.y+math.floor((v.h-font:getHeight())/2), v.w, "center")
   end
 end
 

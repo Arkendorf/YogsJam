@@ -11,6 +11,7 @@ intro.update = function(dt)
 end
 
 intro.draw = function()
+  wave_end.draw_menu("Aaaaa", "mk1")
 end
 
 return intro

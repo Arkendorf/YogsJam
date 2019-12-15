@@ -6,6 +6,11 @@ local game_over = {}
 local start = true
 
 game_over.load = function()
+  gui.remove_button(0)
+  gui.remove_button(1)
+  gui.remove_button(2)
+  gui.remove_button(4)
+  gui.remove_button(8)
   gui.add_button("home", 0, 0, 128, 32, "Main Menu", game_over.button_home)
   gui.add_button("again", 0, 36, 128, 32, "Play Again", game_over.button_again)
   if score > highscore then

@@ -5,14 +5,24 @@ local wave_end = {}
 
 local turret_type = ""
 
+local menu_img = love.graphics.newImage("menu.png")
+local box_img = love.graphics.newImage("turret_box.png")
+local base_img = love.graphics.newImage("turret_base.png")
+
+local menu_pos = {x = 0, y = 0}
+
+
 wave_end.load = function(turret_override)
+  menu_pos.x = math.floor((window_w-menu_img:getWidth())/2)
+  menu_pos.y = math.floor((window_h-menu_img:getHeight())/2)
+
   gui.disable_button(0)
   gui.disable_button(1)
   gui.disable_button(2)
   gui.disable_button(4)
   gui.disable_button(8)
-  gui.add_button("give_away", 0, 0, 128, 32, "Give Away", wave_end.button_give_away)
-  gui.add_button("keep", 0, 36, 128, 32, "Keep", wave_end.button_keep)
+  gui.add_button("give_away", menu_pos.x + 117, menu_pos.y+108, 96, 18, "Give Away", wave_end.button_give_away)
+  gui.add_button("keep", menu_pos.x + 117, menu_pos.y+128, 96, 18, "Keep", wave_end.button_keep)
 
   if turret_override then
     turret_type = turret_override
@@ -27,9 +37,16 @@ end
 wave_end.draw = function()
   love.graphics.setColor(1, 1, 1)
   love.graphics.print(turret_type, 0, 100)
+  wave_end.draw_menu(turret_type, turret_type)
 end
 
 wave_end.draw_menu = function(text, turret)
+  love.graphics.draw(menu_img, menu_pos.x, menu_pos.y)
+  love.graphics.draw(box_img, menu_pos.x+75, menu_pos.y+107)
+  love.graphics.draw(base_img, menu_pos.x+79, menu_pos.y+111)
+  love.graphics.draw(turret_types[turret].img, menu_pos.x+79, menu_pos.y+111)
+  love.graphics.setColor(text_color)
+  love.graphics.printf(text, menu_pos.x+8, menu_pos.y+12, 272)
 end
 
 wave_end.button_give_away = function()
@@ -51,10 +68,13 @@ end
 
 wave_end.pick_turret = function()
   local max_score = math.max(current_wave *.5, 1)
-  local min_score = math.max(max_score-3, 1)
+  local highest = 0
   local options = {}
   for k, v in pairs(turret_types) do
-    if v.score >= min_score and v.score <= max_score then
+    if v.score > highest then
+      highest = v.score
+    end
+    if v.score <= max_score then
       options[#options+1] = k
     end
   end
