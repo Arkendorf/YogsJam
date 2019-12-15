@@ -1,13 +1,14 @@
 local turret_data = require "turret_data"
 local turret_types = require "turret_types"
+local effects = require "effects"
 
 local place = {}
 
 local turret_type = ""
 
 local current_tile = {x = 1, y = 1}
-local valid_color = {.2, 1, .2}
-local invalid_color = {1, .2, .2}
+local valid_color = {66/255, 188/255, 127/255}
+local invalid_color = {229/255, 149/255, 159/255}
 
 local outline_img = love.graphics.newImage("turret_outline.png")
 
@@ -44,7 +45,7 @@ place.draw = function()
 
     local i, v = place.is_replace()
     if v then
-      love.graphics.print("Replace " .. v.type .. " and give it away?", current_tile.x*tile_size, current_tile.y*tile_size)
+      love.graphics.printf("Replace and give away " .. type_info.name .. "?", 305, 354, window_w-305-2, "right")
     end
   else
     love.graphics.setColor(invalid_color)
@@ -57,6 +58,7 @@ place.mousepressed = function(x, y, button)
     -- remove old and increment score
     local i, v = place.is_replace()
     if v then
+      effects.add_turret(v.x*tile_size, v.y*tile_size, v.type)
       score = score + turret_types[v.type].score
       turret_data.remove(i)
     end

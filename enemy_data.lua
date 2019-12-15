@@ -1,5 +1,6 @@
 local grid_path = require "grid_path"
 local enemy_types = require "enemy_types"
+local effects = require "effects"
 
 local enemy_data = {}
 
@@ -31,6 +32,7 @@ enemy_data.update = function(dt)
   for k, v in pairs(enemies) do
     local type_info = enemy_types[v.type]
     if v.health <= 0 or v.x < 1*tile_size or v.x > #grid[1]*tile_size or v.y < 1*tile_size or v.y > #grid*tile_size then
+      effects.add_splat(v.x, v.y, type_info.w)
       enemy_data.remove(k)
     else
       v.xv = enemy_data.lerp(v.xv, v.goal_xv, dt * (2+type_info.speed*2))
@@ -48,6 +50,7 @@ enemy_data.update = function(dt)
           v.step = v.step + 1
         end
       else
+        effects.add_explosion(v.x, v.y)
         enemy_data.remove(k)
         health = health - v.health
       end

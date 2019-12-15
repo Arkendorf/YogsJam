@@ -1,5 +1,6 @@
 local turret_data = require "turret_data"
 local enemy_data = require "enemy_data"
+local effects = require "effects"
 
 local map = {}
 
@@ -26,8 +27,13 @@ map.draw = function()
       end
     end
   end
+
+  effects.draw_bottom()
+
   turret_data.draw()
   enemy_data.draw()
+
+  effects.draw()
 end
 
 map.load_tiles = function()

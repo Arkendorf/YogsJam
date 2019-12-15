@@ -11,24 +11,25 @@ local game = {}
 
 game_state = "intro"
 score = 0
-health = 0
-max_dt = .1
+max_health = 100
+health = max_health
 
+max_dt = .1
 speed = 1
 
-text_color = {193/255, 217/255, 242/255}
+local start_x, start_y = 0
 
 game.load = function()
-  local start_x, start_y = (window_w-176) / 2, window_h-32
-  gui.add_button(0, start_x, start_y, 48, 32, "Pause", game.set_speed, {0})
-  gui.add_button(1, start_x+48, start_y, 32, 32, "1x", game.set_speed, {1})
-  gui.add_button(2, start_x+48+32, start_y, 32, 32, "2x", game.set_speed, {2})
-  gui.add_button(4, start_x+48+32*2, start_y, 32, 32, "4x", game.set_speed, {4})
-  gui.add_button(8, start_x+48+32*3, start_y, 32, 32, "8x", game.set_speed, {8})
+  start_x, start_y = (window_w-130) / 2, window_h-20
+  gui.add_button(0, start_x, start_y, 48, 18, "Pause", game.set_speed, {0})
+  gui.add_button(1, start_x+50, start_y, 18, 18, "1x", game.set_speed, {1})
+  gui.add_button(2, start_x+50+20, start_y, 18, 18, "2x", game.set_speed, {2})
+  gui.add_button(4, start_x+50+20*2, start_y, 18, 18, "4x", game.set_speed, {4})
+  gui.add_button(8, start_x+50+20*3, start_y, 18, 18, "8x", game.set_speed, {8})
 
   game_state = "intro"
   score = 0
-  health = 100
+  health = max_health
   speed = 1
   gui.highlight_button(1)
 
@@ -63,7 +64,6 @@ end
 
 game.draw = function()
   map.draw()
-  effects.draw()
 
   if game_state == "intro" then
     intro.draw()
@@ -76,9 +76,11 @@ game.draw = function()
   end
 
   love.graphics.setColor(text_color)
-  love.graphics.print("Homes Defended: " .. tostring(score), 2, 2)
-  love.graphics.print("Factory Integrity: " .. tostring(health), 2, 12)
-  love.graphics.print("Alien Wave: " .. tostring(current_wave), 2, 22)
+  love.graphics.printf("Speed: ", start_x, 354, 130, "center")
+
+  love.graphics.print("Civilians Defended: " .. tostring(score), 2, 354)
+  love.graphics.print("Factory Integrity: " .. tostring(math.floor(health/max_health*100)).. "%", 2, 364)
+  love.graphics.print("Alien Wave: " .. tostring(current_wave), 2, 374)
 end
 
 game.mousepressed = function(x, y, button)

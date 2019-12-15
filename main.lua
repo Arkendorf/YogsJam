@@ -6,6 +6,7 @@ local home = require "home"
 local game = require "game"
 local game_over = require "game_over"
 local map = require "map"
+local effects = require "effects"
 
 state = "home"
 highscore = 0
@@ -16,18 +17,17 @@ canvas = false
 love.load = function()
   math.randomseed(os.time())
 
-  home.load()
-
   if love.filesystem.getInfo("highscore.txt") then
     local text = love.filesystem.read("highscore.txt")
     highscore = tonumber(text)
   end
-  love.window.setMode(960, 832)
+  love.window.setMode(960, 768)
   window_w = math.floor(love.graphics.getWidth()/scale)
   window_h = math.floor(love.graphics.getHeight()/scale)
   canvas = love.graphics.newCanvas(window_w, window_h)
 
   map.load_tiles()
+  effects.load_quads()
 
   love.graphics.setBackgroundColor(41/255, 50/255, 104/255)
 
@@ -36,6 +36,8 @@ love.load = function()
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
   "123456789.,!?-+/():;%&`'*#=[]\"_", 1)
   love.graphics.setFont(font)
+
+  home.load()
 end
 
 love.update = function(dt)

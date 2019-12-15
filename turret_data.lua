@@ -58,6 +58,8 @@ turret_data.shoot = function(i, v)
     local shot_x = x + x_offset * math.cos(v.angle) - y_offset * math.sin(v.angle)
     local shot_y = y + y_offset * math.cos(v.angle) + x_offset * math.sin(v.angle)
     effects.add_shot(shot_x, shot_y, v.target.x, v.target.y, type_info.damage)
+    effects.add_flash(shot_x, shot_y, v.angle)
+
     v.gun = v.gun + 1
     if v.gun > #type_info.guns then
       v.gun = 1

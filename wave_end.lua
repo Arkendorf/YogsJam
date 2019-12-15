@@ -1,21 +1,17 @@
 local place = require "place"
 local turret_types = require "turret_types"
+local effects = require "effects"
 
 local wave_end = {}
 
 local turret_type = ""
 
-local menu_img = love.graphics.newImage("menu.png")
 local box_img = love.graphics.newImage("turret_box.png")
 local base_img = love.graphics.newImage("turret_base.png")
 
-local menu_pos = {x = 0, y = 0}
-
+local target_types = {"Nearest", "First", "Healthiest"}
 
 wave_end.load = function(turret_override)
-  menu_pos.x = math.floor((window_w-menu_img:getWidth())/2)
-  menu_pos.y = math.floor((window_h-menu_img:getHeight())/2)
-
   gui.disable_button(0)
   gui.disable_button(1)
   gui.disable_button(2)
@@ -37,7 +33,7 @@ end
 wave_end.draw = function()
   love.graphics.setColor(1, 1, 1)
   love.graphics.print(turret_type, 0, 100)
-  wave_end.draw_menu(turret_type, turret_type)
+  wave_end.draw_menu(wave_end.turret_text(turret_type), turret_type)
 end
 
 wave_end.draw_menu = function(text, turret)
@@ -50,6 +46,7 @@ wave_end.draw_menu = function(text, turret)
 end
 
 wave_end.button_give_away = function()
+  effects.add_turret(menu_pos.x+79, menu_pos.y+111, turret_type)
   score = score + turret_types[turret_type].score
   turret_type = ""
   wave_end.start_place()
@@ -80,6 +77,17 @@ wave_end.pick_turret = function()
   end
   local type = options[math.random(1, #options)]
   return type
+end
+
+wave_end.turret_text = function(turret)
+  local info = turret_types[turret]
+  local text = info.name .. "\n"
+  text = text .. "Range: " .. info.range .. " - "
+  text = text .. "Damage: " .. info.damage .. " - "
+  text = text .. "Cooldown: " .. info.cooldown .. "s\n"
+  text = text .. "Target: " .. target_types[info.behavior] .. "\n\n"
+  text = text .. info.desc
+  return text
 end
 
 return wave_end

@@ -60,12 +60,12 @@ wave.wave_end = function()
 end
 
 wave.set_limits = function()
-  individual_cost = math.max(current_wave *.5, 1)
+  individual_cost = math.ceil(current_wave *.5)
   max_total_cost = current_wave * 10
 
   current_total_cost = 0
 
-  max_spawn_delay = 1.5 / current_wave
+  max_spawn_delay = 2 / current_wave
 end
 
 wave.new_enemy = function()
@@ -76,7 +76,7 @@ wave.new_enemy = function()
     else
       wave.add_enemy(available_cost)
     end
-    spawn_delay = math.random(max_spawn_delay/4, max_spawn_delay)
+    spawn_delay = math.random(max_spawn_delay/2, max_spawn_delay)
   end
 end
 
