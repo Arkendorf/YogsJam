@@ -29,6 +29,7 @@ turret_data.update = function(dt)
 end
 
 turret_data.draw = function()
+  love.graphics.setColor(1, 1, 1)
   for i, v in ipairs(turrets) do
     local type_info = turret_types[v.type]
     love.graphics.draw(shadow_img, (v.x-1)*tile_size, (v.y-1)*tile_size)
