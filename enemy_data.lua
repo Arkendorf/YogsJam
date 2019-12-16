@@ -77,7 +77,7 @@ enemy_data.draw = function()
   love.graphics.setColor(1, 1, 1)
   for k, v in pairs(enemies) do
     local type_info = enemy_types[v.type]
-    love.graphics.draw(type_info.img, type_info.quad[math.floor(v.frame)], v.x-tile_size, v.y-tile_size, v.angle, 1, 1, type_info.w/2, type_info.h/2)
+    love.graphics.draw(type_info.img, type_info.quad[math.min(math.floor(v.frame), #type_info.quad)], v.x-tile_size, v.y-tile_size, v.angle, 1, 1, type_info.w/2, type_info.h/2)
   end
 end
 
