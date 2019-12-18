@@ -64,7 +64,7 @@ effects.update = function(dt)
   end
   for k, v in pairs(explosions) do
     v.frame = v.frame + dt * explosion_speed
-    if v.frame > #explosion_quad + 1 then
+    if v.frame >= #explosion_quad + 1 then
       effects.remove_explosion(k)
     end
   end
@@ -93,7 +93,7 @@ effects.draw = function()
     love.graphics.draw(turret_types[v.type].img, v.x, v.y, 0, v.size, v.size, tile_size/2, tile_size/2)
   end
   for k, v in pairs(explosions) do
-    love.graphics.draw(explosion_img, explosion_quad[math.min(math.floor(v.frame), #explosion_quad)], v.x-tile_size, v.y-tile_size, v.angle, 1, 1, 16, 16)
+    love.graphics.draw(explosion_img, explosion_quad[math.floor(v.frame)], v.x-tile_size, v.y-tile_size, v.angle, 1, 1, 16, 16)
   end
 end
 
